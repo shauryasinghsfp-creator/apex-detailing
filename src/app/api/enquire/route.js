@@ -13,7 +13,19 @@ import { buildEnquiryEmail } from '@/lib/emailTemplate';
  */
 
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'shauryasinghsfp@gmail.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
+/**
+ * Resolve the sender address.
+ * RESEND_FROM_EMAIL may be EITHER a bare email ("onboarding@resend.dev")
+ * OR a full "Name <email>" string ("APEX Atelier <onboarding@resend.dev>").
+ * We must pass it through verbatim in both cases — never wrap it again,
+ * otherwise Resend rejects it with "Invalid `from` field".
+ */
+function resolveFromEmail() {
+  const raw = (process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev').trim();
+  // If it already looks like "Name <email>" or is just an email, pass through as-is.
+  return raw;
+}
 
 function normalizeValue(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -81,7 +93,7 @@ export async function POST(request) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data: emailData, error } = await resend.emails.send({
-      from: `APEX Atelier <${FROM_EMAIL}>`,
+      from: resolveFromEmail(),
       to: [OWNER_EMAIL],
       replyTo: data.email,
       subject,
