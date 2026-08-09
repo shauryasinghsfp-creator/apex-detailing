@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { buildEnquiryEmail } from '@/lib/emailTemplate';
 
 /**
@@ -7,25 +7,21 @@ import { buildEnquiryEmail } from '@/lib/emailTemplate';
  * Receives a booking inquiry from the client-side form, validates the payload,
  * and dispatches a beautifully formatted HTML email to the shop owner.
  *
- * Fallback behaviour: if no `RESEND_API_KEY` is configured, the route logs the
- * lead to the server console and returns a success response so the app can be
- * developed/tested in "sandbox mode" without a real email provider.
+ * Uses Gmail SMTP via Nodemailer (no custom domain required). Configure with:
+ *   SMTP_HOST=smtp.gmail.com
+ *   SMTP_PORT=465
+ *   SMTP_USER=<your gmail address>
+ *   SMTP_PASS=<your gmail APP PASSWORD>
+ *   OWNER_EMAIL=<where enquiries are delivered>
+ *
+ * Fallback: if SMTP is not configured, logs the lead to the console (sandbox mode).
  */
 
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'johnstanleee@gmail.com';
-
-/**
- * Resolve the sender address.
- * RESEND_FROM_EMAIL may be EITHER a bare email ("onboarding@resend.dev")
- * OR a full "Name <email>" string ("APEX Atelier <onboarding@resend.dev>").
- * We must pass it through verbatim in both cases — never wrap it again,
- * otherwise Resend rejects it with "Invalid `from` field".
- */
-function resolveFromEmail() {
-  const raw = (process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev').trim();
-  // If it already looks like "Name <email>" or is just an email, pass through as-is.
-  return raw;
-}
+const SMTP_USER = process.env.SMTP_USER || '';
+const SMTP_PASS = process.env.SMTP_PASS || '';
+const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
+const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
 
 function normalizeValue(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -49,10 +45,9 @@ export async function POST(request) {
       notes: normalizeValue(body.notes),
     };
 
-    // --- Client-side style validation (server double-check) --------------
+    // --- Server-side validation ------------------------------------------
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const errors = {};
-
     if (!data.clientName) errors.clientName = 'Please provide your full name.';
     if (!data.phone || data.phone.length < 7)
       errors.phone = 'Please provide a valid phone number.';
@@ -70,9 +65,9 @@ export async function POST(request) {
     // --- Build the HTML email --------------------------------------------
     const { subject, html } = buildEnquiryEmail(data);
 
-    // --- Sandbox mode: no API key configured yet --------------------------
-    if (!process.env.RESEND_API_KEY) {
-      console.log('\n[APEX // ATELIER] ====== SANDBOX MODE — no RESEND_API_KEY ======');
+    // --- Sandbox mode: SMTP not configured -------------------------------
+    if (!SMTP_USER || !SMTP_PASS) {
+      console.log('\n[APEX // ATELIER] ====== SANDBOX MODE — SMTP not configured ======');
       console.log('Subject:', subject);
       console.log('To:', OWNER_EMAIL);
       console.log('Lead:', JSON.stringify(data, null, 2));
@@ -83,51 +78,48 @@ export async function POST(request) {
           ok: true,
           sandbox: true,
           message:
-            'Inquiry received (sandbox mode). Add a RESEND_API_KEY to enable real email dispatch.',
+            'Inquiry received (sandbox mode). Configure SMTP_GMAIL_USER/PASS to enable real email dispatch.',
         },
         { status: 200 }
       );
     }
 
-    // --- Production mode: dispatch via Resend ----------------------------
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    // --- Production mode: send via Gmail SMTP ----------------------------
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: true, // 465
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    });
 
-    const { data: emailData, error } = await resend.emails.send({
-      from: resolveFromEmail(),
-      to: [OWNER_EMAIL],
+    const info = await transporter.sendMail({
+      from: `APEX Atelier <${SMTP_USER}>`,
+      to: OWNER_EMAIL,
       replyTo: data.email,
       subject,
       html,
     });
 
-    if (error) {
-      console.error('[APEX // ATELIER] Resend error:', error);
-      return NextResponse.json(
-        {
-          ok: false,
-          message:
-            'The email service could not deliver your inquiry. Please try again shortly.',
-        },
-        { status: 500 }
-      );
-    }
+    console.log('[APEX // ATELIER] Email sent:', info.messageId);
 
     return NextResponse.json(
       {
         ok: true,
-        id: emailData?.id,
+        id: info.messageId,
         message: 'Your inquiry has been sent to the atelier. We will be in touch shortly.',
       },
       { status: 200 }
     );
   } catch (err) {
-    console.error('[APEX // ATELIER] Unexpected error:', err);
+    console.error('[APEX // ATELIER] Email error:', err);
     return NextResponse.json(
       {
         ok: false,
-        message: 'An unexpected error occurred while processing your inquiry.',
+        message:
+          'The email service could not deliver your inquiry. Please check the SMTP configuration.',
       },
       { status: 500 }
     );
   }
 }
+</content>
