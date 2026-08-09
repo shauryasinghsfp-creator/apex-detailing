@@ -2,6 +2,7 @@
  * emailTemplate.js
  * Generates a beautifully formatted HTML email for incoming APEX lead inquiries.
  * Used by the `/api/enquire` route to dispatch the booking request to the shop owner.
+ * Enquiries are delivered to OWNER_EMAIL (configured via .env.local).
  */
 
 function escapeHtml(value = '') {
