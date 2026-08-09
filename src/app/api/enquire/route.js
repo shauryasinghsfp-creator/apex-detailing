@@ -112,7 +112,7 @@ export async function POST(request) {
     );
   } catch (err) {
     console.error('[APEX // ATELIER] Email error:', err);
-    return NextResponse.json(
+return NextResponse.json(
       {
         ok: false,
         message:
@@ -122,4 +122,3 @@ export async function POST(request) {
     );
   }
 }
-</content>
