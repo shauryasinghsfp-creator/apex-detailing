@@ -40,7 +40,7 @@ export default function HomePage() {
       <PorscheHero />
 
       {/* ---------- Services Overview ---------- */}
-      <section className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <section className="relative mx-auto max-w-6xl px-5 py-24 md:px-6 md:py-32">
         <div className="mb-14 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <span className="label text-gold">Our Craft</span>
@@ -78,13 +78,13 @@ export default function HomePage() {
       </section>
 
       {/* ---------- CTA Banner ---------- */}
-      <section className="relative mx-auto max-w-6xl px-6 pb-28 md:pb-36">
+      <section className="relative mx-auto max-w-6xl px-5 pb-28 md:px-6 md:pb-36">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="cinematic-vignette relative overflow-hidden rounded-3xl border border-glass bg-gradient-to-br from-panel via-obsidian to-obsidian p-10 text-center md:p-20"
+          className="cinematic-vignette relative overflow-hidden rounded-3xl border border-glass bg-gradient-to-br from-panel via-obsidian to-obsidian p-8 text-center md:p-20"
         >
           <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-gold/[0.08] blur-[100px]" />
           <span className="label text-gold">Begin Your Commission</span>
@@ -98,7 +98,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/enquire"
-            className="btn-luxe group mt-10 gap-3 bg-gold px-10 py-4 text-sm text-obsidian shadow-glowGold hover:bg-gold-soft"
+            className="btn-luxe group mt-10 gap-3 bg-gold px-8 py-4 text-sm text-obsidian shadow-glowGold hover:bg-gold-soft md:px-10"
           >
             Book Your Appointment
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />

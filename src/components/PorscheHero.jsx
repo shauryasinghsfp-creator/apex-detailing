@@ -72,8 +72,8 @@ export default function PorscheHero() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/[0.07] blur-[120px] will-change-transform"
       />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-6 pt-28 pb-16 text-center md:pt-8">
+{/* Content */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-5 pt-20 pb-16 text-center md:px-6 md:pt-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

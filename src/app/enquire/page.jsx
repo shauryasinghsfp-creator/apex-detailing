@@ -27,7 +27,7 @@ const INFO = [
 
 export default function EnquirePage() {
   return (
-    <div className="mx-auto max-w-6xl px-6 pb-28 pt-28 md:pt-32">
+    <div className="mx-auto max-w-6xl px-5 pb-28 pt-10 md:px-6 md:pt-32">
       {/* Header */}
       <header className="mb-14">
         <span className="label text-gold">Begin Your Commission</span>
@@ -42,7 +42,7 @@ export default function EnquirePage() {
 
       <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
         {/* Form */}
-        <div className="glass rounded-2xl p-6 md:p-10">
+        <div className="glass rounded-2xl p-5 md:p-10">
           <BookingForm />
         </div>
 

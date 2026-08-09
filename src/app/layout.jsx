@@ -1,6 +1,13 @@
 import '../styles/globals.css';
 import SidebarNav from '@/components/SidebarNav';
-import { cn } from '@/lib/cn';
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+  themeColor: '#09090B',
+};
 
 export const metadata = {
   title: 'APEX DETAILING // Atelier — Precision Detailing for the World\'s Finest Automobiles',
@@ -27,7 +34,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className="dark">
       <body className="min-h-screen bg-obsidian text-bone antialiased">
         <SidebarNav />
-        <main className="md:pl-[248px]">{children}</main>
+        <main className="pt-safe pt-16 md:pt-0 md:pl-[248px]">{children}</main>
       </body>
     </html>
   );

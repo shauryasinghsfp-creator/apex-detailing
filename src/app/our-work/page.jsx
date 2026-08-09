@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function OurWorkPage() {
   return (
-    <div className="mx-auto max-w-6xl px-6 pb-28 pt-28 md:pt-32">
+    <div className="mx-auto max-w-6xl px-5 pb-28 pt-10 md:px-6 md:pt-32">
       {/* Header */}
       <header className="mb-14">
         <span className="label text-gold">The Portfolio</span>

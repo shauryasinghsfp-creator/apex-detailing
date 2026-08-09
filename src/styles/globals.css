@@ -139,6 +139,42 @@ body {
   scrollbar-width: none;
 }
 
+/* ============================================================
+   Mobile-first optimisations
+   ============================================================ */
+/* Prevent iOS text autozoom on input focus */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+@media (min-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 14px;
+  }
+}
+
+/* Safe-area helper for notched phones */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Comfortable tap targets on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .btn-luxe,
+  button {
+    min-height: 44px;
+  }
+  .nav-link {
+    min-height: 48px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

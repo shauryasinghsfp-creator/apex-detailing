@@ -98,8 +98,8 @@ export default function SidebarNav() {
         </div>
       </aside>
 
-      {/* ---------- Mobile top bar ---------- */}
-      <header className="fixed left-0 right-0 top-0 z-40 flex items-center justify-between border-b border-glass bg-obsidian/80 px-5 py-4 backdrop-blur-xl md:hidden">
+{/* ---------- Mobile top bar ---------- */}
+      <header className="pt-safe fixed left-0 right-0 top-0 z-40 flex items-center justify-between border-b border-glass bg-obsidian/80 px-5 py-4 backdrop-blur-xl md:hidden">
         <div className="flex flex-col leading-none">
           <span className="font-heading text-[13px] font-bold uppercase tracking-[0.26em] text-bone">
             APEX
