@@ -2,7 +2,7 @@
 
 This guide explains how to configure **automatic email dispatch** for the booking
 system so that every enquiry submitted on `/enquire` is emailed directly to the
-shop owner (`owner@apexdetail.com`).
+shop owner (`johnstanleee@gmail.com`).
 
 The app uses **[Resend](https://resend.com)** as the email provider. Resend offers
 a generous free tier and is the simplest way to send beautiful, HTML-formatted

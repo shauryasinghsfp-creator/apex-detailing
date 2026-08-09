@@ -12,7 +12,7 @@ import { buildEnquiryEmail } from '@/lib/emailTemplate';
  * developed/tested in "sandbox mode" without a real email provider.
  */
 
-const OWNER_EMAIL = process.env.OWNER_EMAIL || 'shauryasinghsfp@gmail.com';
+const OWNER_EMAIL = process.env.OWNER_EMAIL || 'johnstanleee@gmail.com';
 
 /**
  * Resolve the sender address.
